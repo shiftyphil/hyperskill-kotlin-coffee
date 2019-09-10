@@ -74,59 +74,99 @@ class CoffeeMachine(supplyLevels: Map<Supply, Int>) {
     }
 }
 
+enum class CoffeeMachineState {
+    MAIN_MENU,
+    BUY_MENU,
+    FILL_MENU,
+    POWER_OFF
+}
+
+class CoffeeMachineInterface(val machine: CoffeeMachine) {
+    private var state = CoffeeMachineState.MAIN_MENU
+    private var fillItem: Supply = Supply.WATER
+    fun running() = state != CoffeeMachineState.POWER_OFF
+
+    fun prompt(): String =
+            when (state) {
+                CoffeeMachineState.MAIN_MENU ->
+                    "Write action (buy, fill, take, remaining, exit): "
+                CoffeeMachineState.BUY_MENU ->
+                    "What do you want to buy? ${Coffee.values().joinToString { "${it.key} - ${it.label}" }}: "
+                CoffeeMachineState.FILL_MENU ->
+                    "Write how many ${fillItem.refillUnit} do you want to add: "
+                else -> "?"
+            }
+
+    fun handleInput(input: String): String =
+            when (state) {
+                CoffeeMachineState.MAIN_MENU ->
+                    when (input) {
+                        "buy" -> {
+                            state = CoffeeMachineState.BUY_MENU
+                            ""
+                        }
+                        "fill" -> {
+                            fillItem = Supply.WATER
+                            state = CoffeeMachineState.FILL_MENU
+                            ""
+                        }
+                        "take" -> "I gave you \$${machine.takeMoney()}"
+                        "remaining" ->
+                            "The coffee machine has:\n" + machine.getSupplyLevelText().joinToString("\n") { it }
+                        "exit" -> {
+                            state = CoffeeMachineState.POWER_OFF
+                            ""
+                        }
+                        else -> "I don't understand."
+                    }
+                CoffeeMachineState.BUY_MENU -> {
+                    state = CoffeeMachineState.MAIN_MENU
+                    when (val choice = Coffee.getByKey(input)) {
+                        null, Coffee.BACK -> {
+                            ""
+                        }
+                        else -> {
+                            if (machine.canMakeCoffee(choice)) {
+                                machine.makeCoffee(choice)
+                                "I have enough resources, making you a coffee!"
+                            } else {
+                                machine.shortSupplies(choice).joinToString("\n") { "Sorry, not enough ${it}!" }
+                            }
+                        }
+                    }
+                }
+                CoffeeMachineState.FILL_MENU -> {
+                    val amount = input.toInt()
+                    machine.refillSupply(amount, fillItem)
+                    when (fillItem) {
+                        Supply.WATER -> fillItem = Supply.MILK
+                        Supply.MILK -> fillItem = Supply.BEANS
+                        Supply.BEANS -> fillItem = Supply.CUPS
+                        Supply.CUPS -> state = CoffeeMachineState.MAIN_MENU
+                        else -> fillItem = Supply.MILK
+                    }
+                    ""
+                }
+                else -> ""
+            }
+}
+
 fun main() {
     val scanner = Scanner(System.`in`)
 
-    val machine = CoffeeMachine(mapOf(
+    val machine = CoffeeMachineInterface(CoffeeMachine(mapOf(
             Supply.WATER to 400,
             Supply.MILK to 540,
             Supply.BEANS to 120,
             Supply.CUPS to 9,
             Supply.MONEY to 550
-    ))
+    )))
 
-    mainloop@ while (true) {
-        print("Write action (buy, fill, take, remaining, exit): ")
-
-        when (scanner.next()) {
-            "buy" -> {
-                println()
-                print("What do you want to buy? ${Coffee.values().joinToString { "${it.key} - ${it.label}" }}: ")
-                val choice = Coffee.getByKey(scanner.next())
-                println()
-                when (choice) {
-                    null, Coffee.BACK -> continue@mainloop
-                    else -> {
-                        if (machine.canMakeCoffee(choice)) {
-                            println("I have enough resources, making you a coffee!")
-                            machine.makeCoffee(choice)
-                        } else {
-                            machine.shortSupplies(choice).map { println("Sorry, not enough ${it}!") }
-                        }
-                    }
-                }
-            }
-            "fill" -> {
-                for (type in Supply.getFillable()) {
-                    println()
-                    print("Write how many ${type.refillUnit} do you want to add: ")
-                    val amount = scanner.nextInt()
-                    machine.refillSupply(amount, type)
-                }
-            }
-            "take" -> {
-                println()
-                println("I gave you \$${machine.takeMoney()}")
-            }
-            "remaining" -> {
-                println()
-                println("The coffee machine has:")
-                machine.getSupplyLevelText().map { println(it) }
-            }
-            "exit" -> {
-                return
-            }
-            else -> println("I don't understand.")
-        }
+    while (machine.running()) {
+        print(machine.prompt())
+        val input = scanner.next()
+        println()
+        print(machine.handleInput(input))
+        println("\n")
     }
 }
