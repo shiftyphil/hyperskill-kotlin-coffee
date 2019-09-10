@@ -223,7 +223,7 @@
           <option name="items">
             <list>
               <FrameworkLesson>
-                <option name="currentTaskIndex" value="0" />
+                <option name="currentTaskIndex" value="1" />
                 <option name="customPresentableName" />
                 <option name="id" value="0" />
                 <option name="index" value="1" />
@@ -245,7 +245,7 @@
                       <option name="id" value="5659" />
                       <option name="index" value="1" />
                       <option name="name" value="Hello, coffee!" />
-                      <option name="record" value="-1" />
+                      <option name="record" value="1" />
                       <option name="status" value="Solved" />
                       <option name="files">
                         <map>
@@ -295,7 +295,7 @@
                       <option name="index" value="2" />
                       <option name="name" value="Machines have needs" />
                       <option name="record" value="-1" />
-                      <option name="status" value="Unchecked" />
+                      <option name="status" value="Solved" />
                       <option name="files">
                         <map>
                           <entry key="test/CoffeeMachineTest.java">
@@ -318,7 +318,7 @@
                                 <option name="answerPlaceholders">
                                   <list />
                                 </option>
-                                <option name="highlightErrors" value="false" />
+                                <option name="highlightErrors" value="true" />
                                 <option name="name" value="src/machine/Main.kt" />
                                 <option name="text" value="package machine&#10;&#10;fun main() {&#10;    println(&quot;Hello World!&quot;)&#10;}" />
                                 <option name="trackChanges" value="true" />
