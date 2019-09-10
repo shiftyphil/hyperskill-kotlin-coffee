@@ -223,7 +223,7 @@
           <option name="items">
             <list>
               <FrameworkLesson>
-                <option name="currentTaskIndex" value="3" />
+                <option name="currentTaskIndex" value="4" />
                 <option name="customPresentableName" />
                 <option name="id" value="0" />
                 <option name="index" value="1" />
@@ -392,8 +392,8 @@
                       <option name="id" value="5662" />
                       <option name="index" value="4" />
                       <option name="name" value="Action!" />
-                      <option name="record" value="-1" />
-                      <option name="status" value="Solved" />
+                      <option name="record" value="4" />
+                      <option name="status" value="Failed" />
                       <option name="files">
                         <map>
                           <entry key="test/CoffeeMachineTest.java">
@@ -442,7 +442,7 @@
                       <option name="index" value="5" />
                       <option name="name" value="On a coffee loop" />
                       <option name="record" value="-1" />
-                      <option name="status" value="Unchecked" />
+                      <option name="status" value="Solved" />
                       <option name="files">
                         <map>
                           <entry key="test/CoffeeMachineTest.java">
@@ -465,7 +465,7 @@
                                 <option name="answerPlaceholders">
                                   <list />
                                 </option>
-                                <option name="highlightErrors" value="false" />
+                                <option name="highlightErrors" value="true" />
                                 <option name="name" value="src/machine/Main.kt" />
                                 <option name="text" value="package machine&#10;&#10;fun main() {&#10;    println(&quot;Hello World!&quot;)&#10;}" />
                                 <option name="trackChanges" value="true" />
