@@ -295,7 +295,7 @@
                       <option name="index" value="2" />
                       <option name="name" value="Machines have needs" />
                       <option name="record" value="-1" />
-                      <option name="status" value="Solved" />
+                      <option name="status" value="Failed" />
                       <option name="files">
                         <map>
                           <entry key="test/CoffeeMachineTest.java">
